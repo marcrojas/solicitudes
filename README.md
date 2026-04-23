@@ -1,73 +1,33 @@
-# React + TypeScript + Vite
+1. Clonar el repositorio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+git clone https://github.com/marcrojas/solicitudes.git
 
-Currently, two official plugins are available:
+2. CREATE DATABASE solicitudes;
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+    CREATE TABLE solicitudes ( id INT AUTO_INCREMENT PRIMARY KEY, nombre_completo VARCHAR(150) NOT NULL, rut VARCHAR(20) NOT NULL, correo VARCHAR(150) NOT NULL,       tipo_solicitud ENUM('ACCESO','SOPORTE','PERMISO') NOT NULL, descripcion TEXT NOT NULL, estado ENUM('PENDIENTE','APROBADA','RECHAZADA') NOT NULL DEFAULT            'PENDIENTE', fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ); 
+   
+3. Configurar conexión a base de datos
 
-## React Compiler
+   api/config/db.php
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+   private $host = "localhost";
+   private $db = "solicitudes";
+   private $user = "root";
+   private $pass = "";
 
-## Expanding the ESLint configuration
+4. Instalar dependencias
+   npm install
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+5. Configurar URL de la API
+   src/api/solicitudes.ts
+   const API_URL = "http://localhost/solicitudes/api/solicitudes";
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+6. Ejecutar aplicación
+   npm run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+7. Endpoints
+    POST /api/solicitudes
+    GET /api/solicitudes?limit=10&offset=0&estado=PENDIENTE
+    PATCH /api/solicitudes/{id}/estado
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   
